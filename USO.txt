@@ -1,10 +1,9 @@
-
-alt + sageata stanga
-ctrl + acolada
-
 ## https://onceupon.github.io/Bash-Oneliner/
 ## https://www.bashoneliners.com/
+## https://ocw.cs.pub.ro/courses/uso/laboratoare/laborator-08
+## https://ocw.cs.pub.ro/courses/uso/laboratoare/laborator-10
 
+******************************************************************************************************
 
 --ALTELE--
 userls -Rl                          -> afisare detaliata si recursiva
@@ -20,17 +19,19 @@ free                            -> afiseaza memoria libera
 history                         -> afiseaza intreg istoricul de comenzi
 !!                              -> folosire comanda anterioara
 Ctr + r                         -> cautare recursiva in istoric
+${comanda}                      -> duce output-ul ca argument unei alte comenzi
+comanda ... |  comanda ...      -> duce output-ul ca input unei alte comenzi
 
-
-
+**********************************************************************************************************
 
 --FILES--
 sudo pentru acces garantat
 cd {cale_fisier}                ->schimbare director
 cd -                            -> revenire la directorul anterior
-file stat {nume_fisier}                      -> afisare metadate fisier
+file/stat {nume_fisier}                      -> afisare metadate fisier
 ls -hairls                                  -> multe informatii despre fisiere
 ls -ld                          -> afiseaza doar directoarele
+ls -l --sort=size               -> afiseaza fisierele sortate dupa dimensiunea in octeti
 touch {nume_fisier}, > {nume_fisier}                -> creeaza fisier
 cp -r {sursa} {destiantie}             ->copiere recursica fisiere
 mv {fisier_sursa} {fisir_destinatie}                -> mutare/redenumire fisier
@@ -48,13 +49,20 @@ whereis, which, type                -> informatii depre comenzi
 ./program < fisier_intrare                 -> preia outputul din fisier
 ./program > fisiere_de_iesire              -> duce outputul in fisier
 ./program 2> fis, ier_erori                -> redirectare erori in fisiserele
-./program 2>& 1                            -> redirectare erori catre iesirea standard
+./program 2> & 1                            -> redirectare erori catre iesirea standard
 ./program; >> fisier                        -> adaugare in continuarea fisierului
 (comanda ; comanda ; ..) > fisier           -> redirectarea tuturor comenzilor intr-un fisier   
                                             EX: ( ls ; ps ) > a.out
+/dev/null                                   -> ignora orice este scris in elementele
+/dev/zero                                   -> generator de octeti de zero cat ii sunt ceruti
+/dev/urandom                                -> generator de octeti pentru extragerea de caractere`
+dd if=/dev/urandom of=rand-100mb count=100 bs=1M
+                                            -> if - input file - calea către fișierul de unde citim
+                                            -> of - output file - calea către fișierul unde scriem
+                                            -> bs - block size - dimensiunea unui block citit din if
+                                            -> count - block count - numărul de block-uri citite
 
-
-
+***********************************************************************************************************
 
 --PERMISSIONS--
 chown {utilizator} {fisier} 			-> permisiune fisier utilizatori
@@ -63,12 +71,17 @@ chmod +/-[rwx] {file}				-> adaugare/stergere o permisiune fisier catre utilizat
 chmod {nr1nr2nr3} {file}			-> adaugare permisiuni; nr1, nr2, nr3 = numere care in binar 
 						   reprezinta permisiuni in urm ord: user, group, others
 
-owner,group,others
+owner/User,Group,Others
 --- --- --- 
 r = 4
 w = 2
 x = 1 
 
+un utilizator poate modifica      -> Shellul de login, folosind comanda chsh
+                                  -> Informațiile legate de nume, folosind comanda chfn
+                                  -> Parola, folosind comanda passwd
+
+*************************************************************************************************************
 
 --USER--
 finger/pinky {utilizator}				-> aflare detalii despre acel utilizator
@@ -89,6 +102,7 @@ sudo usermod -a -G {grup1,grup2,etc}		    	-> adaugare user curent in mai multe 
 sudo usermod -d {cale_fisier} {user}	        	-> schimbare director  pentru user
 sudo usermod --expiredate 1  {utilizator}           -> dezactiveaza contul si nu mai poate fi folosit
  
+ ***********************************************************************************************************
 
 --ARHIVARE/DEZARHIVARE--
 sudo tar -cvjSf {nume}.tar.bz2 {cale_folder} 	-> arhivare foler in arhiva de tipul .tar.bz2
@@ -99,18 +113,24 @@ tar --append --file={arhiva}.tar {file}		-> append file la o arhiva
 tar -tf {archive}.tar				-> pentru a vedea continutul arhivei
 tar -xf {cale_arhiva}.tar			-> pentru dezarhivare
 
-
+*************************************************************************************************************
 
 --GLOBBING--
-grep -n {pattern} {cale}			-> afiseaza nr liniei care contine patternul cautat
-grep -v {pattern} {cale}			-> afiseaza toate liniile mai putin cele care contin pattern
-cut -d'{delimitator(:,..)}' -f{nr_col1},{nr_col2}-> extrage informatii pe linii si coloane
+grep -n {pattern} {cale}			-> afiseaza nr liniei care contine pattern-ul cautat
+     -i  case senzitive
+     -v excluderea unui cuvant/pattern
+     -r cautare recursiva intr-un folder
+cut -d'{delimitator(:,..)}' -f{nr_col1},{nr_col2}           -> extrage informatii pe linii si coloane
+cat /etc/passwd | cut -f1 -d ":"                             -> selecteaza continutul afisat dupa prima 
+                                                                    coloana data de separatorul :      
+
 tr "ceva" "altceva"				-> inlocuieste "ceva" cu "altceva"
 sed 's/ceva/altceva/g' {file}			-> inlocuieste "ceva" cu "altceva", pe linie (if fara g, atunci tot)
 						   foloseste flagul "-i" pentru a inlocui "inplace" 
 sed -n {line_m},{line_n}p {cale_fisier}		-> afiseaza liniile din intervalul [m, n]
 sort -t	'{separator}' -k {nr_col_infdecaresortam(ex. 3,3)} {file}-> sorteaza (daca vrem sort invers, punem -r)		
 
+***************************************************************************************************************
 
 --INSTALL--
 sudo apt update					-> face update
@@ -122,7 +142,7 @@ sudo apt remove {nume_pachet}               -> dezinstaleaza pachet
 sudo apt -d remove {pachet}                 -> descarca pachet fara a-l instalare
 sudo pip3 list                              -> afiseaza pachetele instalate local
 
-
+**********************************************************************************************************
 
 --IP--
 ping -c 4 8.8.8.8				-> verificare internet 
@@ -136,15 +156,17 @@ wget {adresa_pagina_web}				-> pentru a descarca o pagina web
 traceroute {adresa_web}                 -> verificare conectivitate placa retea
 link set dev {nume_interfata} down/up               -> dezactiveaza/activeaza interfata 
 sudo ip address flush                                    orice configurat, ii anterioare ale interfete sunt sterse
+hostname -I | cut -f1 -d ' '                         -> afiseaza doar adresa IPv4
 
+**********************************************************************************************************************
 
 --SSH--
-scp {cale_fisier} student@10.10.10.3:~/		-> trimiterea fisierelor la distanta prin ssh
-scp root@10.10.10.3:/etc/resolv.conf . 		-> descarcarea fisierelor prin ssh in fisierul curent 
-scp -r ./Downloads/ root@10.10.10.3:~/ 		-> Comanda anterioară a copiat directorul Downloads și conținutul 
-						                    său din directorul curent în directorul home al utilizatorului 
-					                        root de la adresa 10.10.10.3
-ssh-keygen 					    -> pentru generarea unei perechi de key 
+scp {cale_fisier} student@10.10.10.3:{destinatie}		-> trimiterea fisierelor la distanta prin ssh catre o noua statie
+scp root@10.10.10.3:/etc/resolv.conf . 		            -> descarcarea fisierelor de la o statie prin ssh in fisierul curent 
+scp -r ./Downloads/ root@10.10.10.3:~/ 		            -> Comanda anterioară a copiat directorul Downloads și conținutul 
+						                                  său din directorul curent în directorul home al utilizatorului 
+					                                      root de la adresa 10.10.10.3
+ssh-keygen 					      -> pentru generarea unei perechi de key 
 
 ssh-copy-id root@10.10.10.3			-> Pentru copierea cheii publice pe o stație
 ssh-copy-id {nume_user}@vmx.cs.pub.ro    -> adaugarea cheii publice în contul utilizatorului de la distanta
@@ -159,14 +181,14 @@ systemctl stop {nume_serviciu}			-> face inactiv serviciul
 --PROCESE--
 ps -ef						            -> afisare procese
 ps -o pid,ppid,user,rss,%cpu                 -> afisare procese cu format
+ps -ef --sort=%mem                              -> sortare procese dupa memoria consumata
 pidof {nume_program/proces}			        -> afiseaza pidul programului/procesului
 kill -l 				             -> lista comenzilor de "kill"
 kill -9	{PID}					           -> BOMBA NUCLEARA PE PROCES
 pgrep, pidof, pstree, pmap, lsof, top, htop            -> investigare, urmarire si management procese
 mount, lscpu, free, df, lsblk               -> mai multe informatii despre
 
-
-
+********************************************************************************************************************
 
 --SHELL SCRIPTING-- 
 sed 's/{ceva}/{altceva}/' text.txt		-> prima aparitie de pe fiecare linie a lui "ceva" este inlocuita 
@@ -193,12 +215,18 @@ IFS="{separator}" 				-> (Internal Field Separator) definește caracterul sau ca
                                                    care vor fi folosite pentru împărțirea unei linii în câmpuri (splitting).
 ps aux | awk '{ print $1 }' | sed '1 d' | sort | uniq | wc 				
                                             -> numarul de utilizatorii de pe sistemul local care au procese pornite.
+xdg-open google.com                         -> deschide site-ul google.com
+for i in *.svg; do inkscape --export-png=$(basename "$i" .svg).png "$i"; done               -> conversie fisiere in png
 {nume_variabila}={valoare}                   -> initializare nume_variabila
 ${variabila}                                -> accesare continut variabila      
-unset{nume_variabila}                       -> anuleaza definirea variabilei
+unset {nume_variabila}                       -> anuleaza definirea variabilei
 
+while [conditie]                        if [teste]                  for i in $#
+    do                                      then                        do
+        {comnds}                                {comands}                   {comands}             ->  instructiuni in shell
+    done                                    fi                          done
 
-
+*******************************************************************************************************************************
 
 --RegEX--
 ^		-> început de linie
@@ -206,12 +234,15 @@ $		-> sfârșit de linie
 .		-> orice caracter
 *		-> expresia anterioară de oricâte ori, posibil niciodată
 +		-> expresia anterioară de oricâte ori, cel puțin o dată
+[]      -> folosita pentru selectarea de caractere
+{}      -> folosit pentru selectia de siruri de caractere
 [ajt] 		-> orice caracter din setul de caractere a, j, t
 [^ajt]		-> orice caracter mai puțin caracterele a, j, t
 |		-> expresia anterioară sau expresia de după (una dintre cele două expresii)
 ? 		-> expresia anterioară o dată sau niciodată
 [a-z]+,[0-9]+                   -> se potrives, cu un nume format din litere mici urmat de virgula si un numar
 
+************************************************************************************************************************
 
 --ENCODING/HASHING--
 echo -n "{text}" | base64			-> encodeaza in base 64
@@ -220,6 +251,8 @@ echo -n "{text}" | md5sum			-> genereaza hashul
 fcrackzip -v -l 1-4 -u secret_brute_force.zip	-> sparge o parola de maxim 4 caractere din secret_brute_force.zip
 openssl aes-{nr_biti_cheie}-{mod_de_criptare}
 -in {input_file} -out {output_file} 		-> encriptare in AES cu 192 de biti si modul CBC
+                                        EX: openssl aes-256-cbc -in plaintext_file.txt -out encrypted_file.enc -pass pass:"uso rules"
+                                            pentru decriptare adaugam flag-ul -d
 
 
 --GIT-- 
@@ -233,3 +266,80 @@ git branch
 git branch {nume_branch} 		-> adaugare branch
 git checkout {nume_branch}		-> schimbare branch
 git merge {nume_branch}			-> merge intre 2 branchuri
+
+*******************************************************************************************************************************
+
+find /lib -type f -name "*.ko" -size +1M        -> afisare fisiere (intrega cale) cu dimensiunea mai mare de 1M si un nume dat
+find /lib -type f -name "*.ko" -printf "%f\n"   -> afisare doar numele fisierului  dintr-o ierarhie
+sed -ie 's/dog/cat/g' stories.txt               -> inlocuieste toate aparitiile unui cuvant cu altul
+ps -ef | cut -f1 -d " "                         -> afiseaza doar numel fiecarui serviciu din sistem
+cat task4c.txt | base64 > task4c.base           -> cripteaza continul unui fisiser si il duce in altul
+sudo useradd -s /usr/bin/zsh Iron-Man           -> creeaza un utilizator cu shell implicit
+cat /proc/cpuinfo| head -4 | tail -1            -> afiseaza numele procesorului de pe masina
+awk '/^Mem/ {print $3}' <(free -m)              -> afiseaza doar memoria libera de pe masina
+ss -lntu | tail -5                              -> afiseaza porturile TCP care asculta pe masina
+printf 'HelloWorld\n%.0s' {1..5} // yes "HelloWorld" | head -n 5             -> afiseaza un string de 5 ori
+cat /etc/passwd | cut -c 1-n                    -> afiseaza doar primere n caracterede pe fiecare linie
+chsh -s /bin/sh bonnie                          -> schimba shelul unui utilizator
+sudo gpasswd -a nice docker                     -> adauga utilizatorul nice la grupul docker
+sudo chomd o+rw /home/public/bean               -> elfo are drept de r si w asupra fisierelor din ierarhia ...
+sed $nr1 $nr2                                   -> afisare numerele in intervalul nr1 si nr2
+host uso.cs.pub.ro                              -> afiseaza adresa ip a domeniului uso.cs.pub.ro
+ssh {nume}@fep.grid.pub.ro                      -> conectare prin ssh la adresa fep.grd..
+grep rw /proc/mounts | cud -d " " -f2           -> afisare caile unde sunt montate doar sisteme de fisiere r-obține
+sudo lsof                                       -> afsare serviciile pornite pe sistem
+cat /etc/passwd | grep /bin/false | cut -d ":" -f1     -> afisare doar numele utilizatorului care are configurat shelul implicit ....
+dd if=/dev/ruandom of=random10M bs=10M          -> creare fisier cu continut random de 100mb
+sudo mkfs -t ext4 /dev/sdb1                     -> format fisier de la calea in tip ext4
+printenv | grep ^X*                             -> afisare numele variabilei de mediu care incepe cu X 
+ssh-keygen  +    ssh-copy-id nume@statie        -> conectare fara parola la statia ..
+sudo usermod -d /home/marcela_dir marcela       -> schimba home directory-ul unui user.
+sudo usermod -a -G studenti marcela             -> adauga un user la un grup
+usermod -d /home/private/elfo elfo              -> modificare director parinte pentru utilizatorul elfo
+sudo chfn marcela                               -> schimba informatii legate de contul de utilizator
+mount /dev/sdb1 /mnt/                           -> mount + partiția + locația
+
+#!/bin/bash
+
+function no_ctrlc()
+{
+    let ctrlc_count++
+    echo
+    if [[ $ctrlc_count  < 99999999 ]]; then
+        echo "USO doesn't stop!"
+    fi
+}
+trap no_ctrlc SIGINT
+
+while true
+do
+        echo Mwahaha
+        sleep 2
+done
+
+
+#!/bin/bash
+
+function no_ctrlc()
+{
+    let ctrlc_count++
+    echo
+    if [[ $ctrlc_count  < 99999999 ]]; then
+        echo "Nu ma opresti"
+    elif [[ $ctrlc_count == 2 ]]; then
+        echo "Once more and I quit."
+    else
+        echo "Haha nu ma inchizi"
+        exit
+    fi
+}
+trap no_ctrlc SIGINT
+
+while true
+do
+        echo Mwahaha
+        sleep 2
+done
+
+alt + sageata stanga
+ctrl + acolada

@@ -1,0 +1,289 @@
+ADRESE IPV4 : ip -brief -4 address
+MEMORIA LIBERA : free -h | head -2 | tail -1 | awk '{print $NF}'
+? masina nu are adresa ip si te uiti la docker ?
+sudo runuser -l red -c 'echo "I am $USER with uid $UID"'
+
+
+ip a s
+ip link
+ip l
+ssh student@8.8.8.8
+scp -r username1@source_host:directory1/file1
+username2@destination_host:directory2/file2
+
+### Tar & Zip
+
+tar cvf         # Add to archive
+tar xvf         # Extract
+tar tf          # Show contents
+
+tar czvf        # Add to archive - compressed
+tar xzvf        # Extract        - compressed (optional)
+tar ztf         # Show contents  - compressed (optional)
+
+zip filename.zip files      # Add to archive
+zip -u filename.zip files   # Update archive
+unzip filename.zip          # Extract
+zip -sf                     # Show contents
+
+*******************************************************************************
+# Sort every process by memory, shows only user,uid,pid,%mem,%cpu,rss,cmd
+ps -e -o user,uid,pid,%mem,%cpu,rss,cmd --sort=%mem
+
+*******************************************************************************
+dd if=/dev/urandom of=random bs=1M count=100    # File with random characters
+
+dd if=/dev/zero of=zeros bs=1M count=69         # File with zeros
+
+# 20 character long strings
+echo $RANDOM | md5sum | head -c 20; echo;
+tr -dc A-Za-z0-9 </dev/urandom | head -c 20 ; echo;
+pwgen 20 1
+
+*******************************************************************************
+mkfs.ext3                                   # Make an ext3 partition
+mount -t ext3 filename mount/location/here  # Mount filename to that location
+
+*******************************************************************************
+### System info
+
+# Cpu info ------ procesoru
+lscpu
+cat /proc/meminfo
+
+# Memory info
+lsmem
+cat /proc/cpuinfo
+free
+
+lshw        # Hardware info
+lspci       # PCI devices info
+lsusb       # USB info
+
+*******************************************************************************
+### Users
+
+sudo adduser                            	# Longer more complex creation 
+						  of user
+
+sudo useradd -m gigel                   	# Create user with username
+
+sudo useradd -m -d /home/gigel gigel -p passw   # Create user with spicific home
+						  directory and pass
+sudo groupadd namegroup				# Add a group for users
+
+
+w               # Show who is logged on and what they are doing
+who             # Show who is logged on
+whoami          # Show the users name
+id              # Shows id, uid, groups of current user, or a specific user
+finger gigel    # Display information about a specific user (empty means all)
+passwd gigel    # Change the password of a specific user (empty means current user)
+
+su - gigel        # Switch to gigel user
+
+userdel gigel   # Deletes gigel from the computer :(
+
+*******************************************************************************
+### Chmod and chown
+
+#   Read    |   Write   |   Execute
+#     4           2            1
+
+chown +x / +r / +w      # Adds read, execute or write persision to everyone
+chown 666               # Adds read and write to everyone
+
+chown gigel tema-pclp   # Switches the ownership of tema-pclp to gigel
+chown user:group file 1 # Switches the ownership of tema-pclp to user from the group group
+
+*******************************************************************************
+### SSH
+
+ssh student@<ip-address>            # Connects to <ip-address> as student
+ssh student@<ip-address> -p 2222    # Connects to <ip-address> as student on port 2222
+
+scp /etc/passwd student@<ip-address>:~ # Copy passwd to the home directory of student
+scp student@<ip-address>:/etc/passwd ~ # Copy passwd from remote to home directory
+
+*******************************************************************************
+### Encryption
+
+# AES CBC type encryption with 256 bit key
+openssl aes-256-cbc -in file.txt -out encrypted_file.enc -pass pass:"uso rules"
+
+# Same but to decrypt
+aes-256-cbc -d -in encrypted_file.enc -out decrypted_file.txt -pass pass:"uso rules"
+
+# Hashing
+md5sum
+sha256sum
+
+echo -n "apples" | md5sum
+
+*******************************************************************************
+### If
+
+if condition1
+then
+...
+elif codtion2
+then
+...
+else
+...
+fi
+
+*******************************************************************************
+### For & while loops
+
+# For loops from 1 to 10
+for i in 1 2 3 4 5 6 7 8 9 10; do ... done
+for ((i = 1; i <= 10; i++)); do ... done
+for i in $(seq 1 10); do ... done
+for i in $(seq -f "%02g" 1 10); do ... done
+
+for f in *; do ... done                         # For loops for every file
+for arg in $@; do ... done                      # For every argument
+
+# For every user in passwd
+for user in $(awk -F ":" '{print $1}' /etc/passwd);
+do 
+... 
+done
+
+# For every line in countries.csv
+cat csv/countries.csv | while read line
+do
+...
+done
+
+# While loop
+while condition
+do
+...
+done
+
+*******************************************************************************
+### Split string
+
+```bash
+
+IFS=":"     # Your separator
+
+# Get's every argument from /etc/passwd
+cat /etc/passwd | while read user password uid gid gecos home shell
+do
+...
+done
+
+*******************************************************************************
+### EXERCITII
+1) cautarea din . a tuturor fisierelor ce contin search: find . -name "*search*"
+
+2) afiseaza din /proc/meminfo liniile ce contin Mem: cat /proc/meminfo | grep "Mem"
+
+3) cat & tac : printeaza & printeaza pe invers
+
+4) primele 10 caractere: head -c 10
+
+5) procese din sistem : CURS 3 PE OCW
+
+6) printeaza cu tot cu nr de linii : grep -n
+
+7) nu tine cont de litera mica si cea mare : grep -i
+
+8) afiseaza liniile ce NU contin un pattern: grep -v
+
+9) cauta recursiv: grep -r
+
+10) codul cu care si a terminat executia o comanda : echo $?
+
+11) /etc/passwd : info despre toti utilizatorii
+
+12) extrage coloana N, pana la separatorul Q : cut -fN -d"Q"
+					       awk -F' *' '{print $1,$2,$4}'
+
+13) /dev/zero : generator de octeti cu val 0
+
+14) /dev/urandom : generator de octeti caractere
+
+15) inlocurire de cuvinte : sed "s/311CC/312CA/g" students.csv > students.out
+
+16) sortare : 
+	-t specifica separatorul
+	-k specifica index-ul, sau cheia, coloanei dupa care vrem sa sortam intrarile
+	n sortare numerică (implicit este alfabetica)
+	-r sortare inversa (implicit crescator)
+
+17) parametrii:
+	$* este un string ($1, $2 … $n)
+	$@ este o listă formată din argumentele scriptului
+	$1, $2 … $n reprezintă fiecare parametru din script
+	$0 este numele scriptului
+	$# este numărul de argumente primite din linia de comandă
+
+18) citire linii cu mai multi parametrii
+#!/bin/bash
+ 
+IFS=','
+while read name group final_grade test_grade practical_grade; do
+    echo "$name"
+done < students.csv
+
+19) backup de fisiere
+#!/bin/bash
+ 
+for file in $1/*
+do
+    if test -f $file; then
+        stat --print="%a %F %n\n" $file
+        cp $file $file.bkp
+    fi
+done
+
+SAU
+
+#!/bin/bash
+ 
+for file in $(find /usr/share/pixmaps/ -type f -iname '*.jpg')
+do
+    echo $file
+done
+
+20) for i in $(seq -f "%02g" 1 3); do touch test-"$i".txt; done
+
+21) TCP : sudo netstat -tulpn | grep LISTEN
+
+22) utilizatorii aia care nu au shell  ul implicit /bin/bash :
+		grep -v "/bin/bash"
+
+23) convertire : inkscape --export-png=acl.png acl.svg
+
+Caracter Efect în expresie regulată	
+^	început de linie
+$	sfârşit de linie
+.	orice caracter
+*	expresia anterioară de oricâte ori, posibil niciodată
++	expresia anterioară de oricâte ori, cel puţin o dată
+[ajt]	orice caracter din setul de caractere a, j, t
+[Aajt]	orice caracter mai puţin caracterele a, j, t
+|	expresia anterioară sau expresia de după (una dintre cele două expresii)
+?	expresia anterioară o dată sau niciodată
+
+
+
+UTILIZATORI:
+cat /etc/shells + sudo chmod --shell "adresa aia" utilizator
+awk 'NR%2==1' file.txt
+
+--- suma parametrilor
+total=0
+
+for i in $@; do
+  (( total+=i ))
+done
+
+echo "The total is $total"
+
+scb 
+
