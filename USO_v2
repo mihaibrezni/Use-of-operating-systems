@@ -1,3 +1,4 @@
+
 ## https://onceupon.github.io/Bash-Oneliner/
 ## https://www.bashoneliners.com/
 ## https://ocw.cs.pub.ro/courses/uso/laboratoare/laborator-08
@@ -299,6 +300,9 @@ usermod -d /home/private/elfo elfo              -> modificare director parinte p
 sudo chfn marcela                               -> schimba informatii legate de contul de utilizator
 mount /dev/sdb1 /mnt/                           -> mount + partiția + locația
 
+
+----a pretty nice script----does not stop when you press ctrl + c----
+
 #!/bin/bash
 
 function no_ctrlc()
@@ -340,6 +344,3 @@ do
         echo Mwahaha
         sleep 2
 done
-
-alt + sageata stanga
-ctrl + acolada
