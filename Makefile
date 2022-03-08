@@ -21,6 +21,6 @@ task4: task4.c
 # Regulile de "curatenie" (se folosesc pentru stergerea fisierelor intermediare si/sau rezultate)
 #.PHONY : clean
 #clean :
-#	rm -f problema1 problema2 problema3 problema4
+#	rm -f task1 task2 task3 task4
 #	rm -f *.out
 #	rm my_diff
