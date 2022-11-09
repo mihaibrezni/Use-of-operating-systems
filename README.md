@@ -1,3 +1,3 @@
 # USO
 
-## Some pretty import linux commands
+## Basic commands for operating in the linux terminal.
